@@ -156,5 +156,5 @@ DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 RAZORPAY_API_KEY = 'rzp_test_PLfmQqnHfOXPmm'
 RAZORPAY_API_SECRET_KEY ='MIt4KfDyG0nPIN5WaNbTh5gM'
 
-MEDIA_URL = '/media/'  # The URL prefix for media files served by Django during development
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  # The absolute filesystem path to the media directory
+MEDIA_URL = '/Media/'  # The URL prefix for media files served by Django during development
+MEDIA_ROOT = os.path.join(BASE_DIR, 'Media')  # The absolute filesystem path to the media directory
