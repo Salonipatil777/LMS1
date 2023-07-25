@@ -46,4 +46,7 @@ urlpatterns = [
     path('course/watch-course/<slug:slug>',views.WATCH_COURSE,name='watch_course'),
     path('verify_payment',views.VERIFY_PAYMENT,name='verify_payment'),
 
-]+ static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+]
+
+urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL,document_root=settings.STATIC_ROOT)
