@@ -354,6 +354,7 @@ def CHECKOUT(request,slug):
     }
     return render(request,'checkout/checkout.html',context)
 
+@login_required
 def MY_COURSE(request):
     if request.method == 'POST':
         course_id = request.POST.get('course_id')
