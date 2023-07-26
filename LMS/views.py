@@ -366,8 +366,39 @@ def MY_COURSE(request):
             pass
 
     course = UserCourse.objects.filter(user=request.user).order_by('id').distinct()
+
+    # Calculate the rating and total reviews for each course
+    for c in course:
+        ratings = Rating.objects.filter(course=c.course)
+        total_reviews = ratings.count()
+        if total_reviews > 0:
+            max_rating_item = ratings.values('rating').annotate(count=Count('rating')).order_by('-count').first()
+            c.max_rating = max_rating_item['rating']
+            c.total_reviews = total_reviews
+            c.avg_rating = ratings.aggregate(Avg('rating'))['rating__avg']
+        else:
+            c.max_rating = 0
+            c.total_reviews = 0
+            c.avg_rating = 0
+
+        time_duration = Video.objects.filter(course=c.course).aggregate(sum_duration=Sum('time_duration'))
+        c.time_duration = time_duration['sum_duration'] if time_duration['sum_duration'] else 0
+
+        # Calculate the lesson count for each UserCourse (based on the related Course object)
+        c.lesson_count = Video.objects.filter(course=c.course).count()
+
+        # Get the count of enrolled students for each course
+        c.enrolled_students_count = UserCourse.objects.filter(course=c.course).count()
+
+    total_lessons = Video.objects.filter(course__in=[c.course for c in course]).count()
+
+    # Define the stars_range variable
+    stars_range = range(5)  # Assuming a maximum of 5 stars
+
     context = {
         'course': course,
+        'stars_range': stars_range,
+        'total_lessons': total_lessons,
     }
     return render(request, 'course/my_course.html', context)
 
